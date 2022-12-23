@@ -34,8 +34,6 @@ namespace PaidRubik
             ServiceLocator.GetService<SceneLoadService>().Init();
             
             await ServiceLocator.GetService<SceneLoadService>().LoadHomeScene(homeSceneRef);
-
-            await ServiceLocator.GetService<UIViewManager>().Show<ShopUI>();
         }
 
         private void ReleaseService()

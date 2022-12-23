@@ -20,6 +20,11 @@ namespace PaidRubik
             ServiceLocator.GetSignal<NavigationChangedSignal>().Subscribe(OnNavigationChanged);
         }
 
+        protected override void Start()
+        {
+            ChangeTab(_currentIndex = 2);
+        }
+
         private void OnApplicationQuit()
         {
             ServiceLocator.GetSignal<NavigationChangedSignal>().UnSubscribe(OnNavigationChanged);
@@ -44,6 +49,14 @@ namespace PaidRubik
             else if (index == (int) HomeTab.HeroesUI)
             {
                 ServiceLocator.GetService<UIViewManager>().Show<HeroesUI>().Forget();
+            }
+            else if (index == (int)HomeTab.MapUI)
+            {
+                ServiceLocator.GetService<UIViewManager>().Show<MapUI>().Forget();
+            }
+            else if (index == (int)HomeTab.SettingUI)
+            {
+                ServiceLocator.GetService<UIViewManager>().Show<SettingUI>().Forget();
             }
         }
     }

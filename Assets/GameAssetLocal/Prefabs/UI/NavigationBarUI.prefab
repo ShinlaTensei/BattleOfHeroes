@@ -281,9 +281,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: MapButtonUI
       objectReference: {fileID: 0}
+    - target: {fileID: 7275199810405773732, guid: 4f308d863f2474d529ac32d4217e5f02, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 8ebc296403a1943ed9c77e21eadf388b, type: 3}
+    - target: {fileID: 7375493359665451976, guid: 4f308d863f2474d529ac32d4217e5f02, type: 3}
+      propertyPath: m_text
+      value: Map
+      objectReference: {fileID: 0}
     - target: {fileID: 8255867626043124369, guid: 4f308d863f2474d529ac32d4217e5f02, type: 3}
       propertyPath: m_IsOn
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8255867626043124369, guid: 4f308d863f2474d529ac32d4217e5f02, type: 3}
       propertyPath: m_Group
@@ -404,6 +412,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: HeroesButtonUI
       objectReference: {fileID: 0}
+    - target: {fileID: 7275199810405773732, guid: 4f308d863f2474d529ac32d4217e5f02, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4ffab1288b2014044924826c32793f47, type: 3}
+    - target: {fileID: 7375493359665451976, guid: 4f308d863f2474d529ac32d4217e5f02, type: 3}
+      propertyPath: m_text
+      value: Heroes
+      objectReference: {fileID: 0}
     - target: {fileID: 8255867626043124369, guid: 4f308d863f2474d529ac32d4217e5f02, type: 3}
       propertyPath: m_Group
       value: 
@@ -523,9 +539,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: ShopButtonUI
       objectReference: {fileID: 0}
+    - target: {fileID: 7275199810405773732, guid: 4f308d863f2474d529ac32d4217e5f02, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: fdca76473fda246daa25d3bb39a5d85c, type: 3}
+    - target: {fileID: 7375493359665451976, guid: 4f308d863f2474d529ac32d4217e5f02, type: 3}
+      propertyPath: m_text
+      value: Shop
+      objectReference: {fileID: 0}
     - target: {fileID: 8255867626043124369, guid: 4f308d863f2474d529ac32d4217e5f02, type: 3}
       propertyPath: m_IsOn
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8255867626043124369, guid: 4f308d863f2474d529ac32d4217e5f02, type: 3}
       propertyPath: m_Group
@@ -645,6 +669,14 @@ PrefabInstance:
     - target: {fileID: 2135260146046242649, guid: 4f308d863f2474d529ac32d4217e5f02, type: 3}
       propertyPath: m_Name
       value: SettingButtonUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 7275199810405773732, guid: 4f308d863f2474d529ac32d4217e5f02, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 00a3e8b26311744b99b1b9d5d2fed7fc, type: 3}
+    - target: {fileID: 7375493359665451976, guid: 4f308d863f2474d529ac32d4217e5f02, type: 3}
+      propertyPath: m_text
+      value: Setting
       objectReference: {fileID: 0}
     - target: {fileID: 8255867626043124369, guid: 4f308d863f2474d529ac32d4217e5f02, type: 3}
       propertyPath: m_Group

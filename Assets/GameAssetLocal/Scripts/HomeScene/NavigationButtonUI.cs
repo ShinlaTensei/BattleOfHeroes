@@ -29,6 +29,11 @@ namespace PaidRubik
                 toggle.isOn = true;
             }
         }
+
+        public void SetToggle(bool value)
+        {
+            toggle.isOn = value;
+        }
     }
 }
 
