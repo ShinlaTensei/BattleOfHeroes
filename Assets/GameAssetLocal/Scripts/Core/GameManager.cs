@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using Base;
 using Base.Logging;
 using Base.Pattern;
 using Cysharp.Threading.Tasks;
 using Firebase.Database;
+using Firebase.RemoteConfig;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -59,6 +61,7 @@ namespace PaidRubik
                 ServiceLocator.SetService(_pooler).Init();
                 ServiceLocator.GetService<UserCurrencyService>().Init();
                 ServiceLocator.GetService<SceneLoadService>().Init();
+                ServiceLocator.GetService<MapService>().Init();
 
                 uiViewManager.GetView<LoadingUI>().SetStatus("Loading Services ...", .1f);
 
@@ -107,6 +110,31 @@ namespace PaidRubik
                 await firebaseService.SetJsonAsync(DatabaseKey.Currencies, JsonConvert.SerializeObject(pushData));
             }
             uiViewManager.GetView<LoadingUI>().SetStatus("Loading data ...", .5f);
+            uiViewManager.GetView<LoadingUI>().SetStatus("Loading config ...", .5f);
+            if (firebaseService.RemoteConfig.Info.LastFetchStatus == LastFetchStatus.Success)
+            {
+                MapService mapService = ServiceLocator.GetService<MapService>();
+                firebaseService.RemoteConfig.AllValues.TryGetValue(mapService.MapConfigKey, out ConfigValue result);
+                List<MapDataConfig> data = JsonConvert.DeserializeObject<List<MapDataConfig>>(result.StringValue);
+                mapService.From(data);
+            }
+            else
+            {
+                bool fetchConfigStatus = await firebaseService.FetchRemoteConfig();
+            
+                if (fetchConfigStatus)
+                {
+                    MapService mapService = ServiceLocator.GetService<MapService>();
+                    firebaseService.RemoteConfig.AllValues.TryGetValue(mapService.MapConfigKey, out ConfigValue result);
+                    List<MapDataConfig> data = JsonConvert.DeserializeObject<List<MapDataConfig>>(result.StringValue);
+                    mapService.From(data);
+                }
+                else
+                {
+                
+                }
+            }
+            uiViewManager.GetView<LoadingUI>().SetStatus("Loading config ...", .6f);
         }
 
         private void ReleaseService()
@@ -117,6 +145,7 @@ namespace PaidRubik
             ServiceLocator.GetService<UserCurrencyService>().Dispose();
             ServiceLocator.GetService<SceneLoadService>().Dispose();
             ServiceLocator.GetService<FirebaseAppService>().Dispose();
+            ServiceLocator.GetService<MapService>().Dispose();
         }
     }
 }

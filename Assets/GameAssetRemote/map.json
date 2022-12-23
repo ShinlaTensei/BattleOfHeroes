@@ -1,0 +1,47 @@
+﻿[
+  {
+    "ID": "Map1",
+    "Data": [
+      {
+        "Index": 1,
+        "Reward": 100
+      },
+      {
+        "Index": 2,
+        "Reward": 100
+      },
+      {
+        "Index": 3,
+        "Reward": 100
+      },
+      {
+        "Index": 4,
+        "Reward": 100
+      },
+      {
+        "Index": 5,
+        "Reward": 100
+      },
+      {
+        "Index": 6,
+        "Reward": 100
+      },
+      {
+        "Index": 7,
+        "Reward": 100
+      },
+      {
+        "Index": 8,
+        "Reward": 100
+      },
+      {
+        "Index": 9,
+        "Reward": 100
+      },
+      {
+        "Index": 10,
+        "Reward": 100
+      }
+    ]
+  }
+]

@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Remote
+  m_EditorClassIdentifier: 
+  m_GroupName: Remote
+  m_Data:
+    m_SerializedData: []
+  m_GUID: d1dd6b746388d6e4cb4e6bd9479f6738
+  m_SerializeEntries:
+  - m_GUID: 68523a026124b45febbf8d76336bf273
+    m_Address: ShopUI
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2465a3997a39443d799937f5978b5774
+    m_Address: HeroesUI
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2cf7c6e2b532f4b199ec5da55d35ea82
+    m_Address: HomeScene
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8d43a53249c1e4724a3e6530a3598255
+    m_Address: MapUI
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 236d7bd26e3ef4c18a429b8372b874d5
+    m_Address: SettingUI
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 38953e71033c4c44aaff14d0f3e271ab
+    m_Address: RemoteAtlas
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 26a8020340dcb45aa92e6fdfd62f7ef8, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 053fce30dde4e894c9bf00a76656ac2c, type: 2}
+    - {fileID: 11400000, guid: b1c16df136cfc3a4fb6a1dc35b078402, type: 2}

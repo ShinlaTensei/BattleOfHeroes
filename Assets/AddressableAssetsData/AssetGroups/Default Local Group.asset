@@ -16,32 +16,7 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: 9af16e7f8dd50438a978ceb82d96299b
-  m_SerializeEntries:
-  - m_GUID: 68523a026124b45febbf8d76336bf273
-    m_Address: ShopUI
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 2465a3997a39443d799937f5978b5774
-    m_Address: HeroesUI
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 2cf7c6e2b532f4b199ec5da55d35ea82
-    m_Address: HomeScene
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 8d43a53249c1e4724a3e6530a3598255
-    m_Address: MapUI
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 236d7bd26e3ef4c18a429b8372b874d5
-    m_Address: SettingUI
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 26a8020340dcb45aa92e6fdfd62f7ef8, type: 2}
   m_SchemaSet:

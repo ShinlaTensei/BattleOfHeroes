@@ -7,6 +7,7 @@ using Cysharp.Threading.Tasks;
 using Firebase;
 using Firebase.Auth;
 using Firebase.Database;
+using Firebase.RemoteConfig;
 using Newtonsoft.Json;
 using UnityEngine;
 
@@ -17,6 +18,7 @@ namespace PaidRubik
         private FirebaseApp _firebaseApp;
         private FirebaseAuth _firebaseAuth;
         private FirebaseDatabase _firebaseDatabase;
+        private FirebaseRemoteConfig _firebaseRemoteConfig;
 
         private const string DatabaseURL = "https://battleofheroes-48e86-default-rtdb.asia-southeast1.firebasedatabase.app";
         public bool IsFirebaseReady { get; set; }
@@ -28,6 +30,8 @@ namespace PaidRubik
 
         public DatabaseReference MyRef => _firebaseDatabase.GetReference($"Users/{UserID}");
 
+        public FirebaseRemoteConfig RemoteConfig => _firebaseRemoteConfig;
+
         public void Init()
         {
             
@@ -36,10 +40,10 @@ namespace PaidRubik
         public void Dispose()
         {
             //_firebaseAuth.SignOut();
-            
-            _firebaseApp.Dispose();
             _firebaseAuth.Dispose();
             _firebaseDatabase = null;
+            _firebaseRemoteConfig.Info.Dispose();
+            _firebaseApp.Dispose(true);
         }
 
         public async UniTask InitializeAsync()
@@ -52,8 +56,9 @@ namespace PaidRubik
                 _firebaseApp = FirebaseApp.DefaultInstance;
                 _firebaseAuth = FirebaseAuth.GetAuth(_firebaseApp);
                 _firebaseDatabase = FirebaseDatabase.GetInstance(_firebaseApp, DatabaseURL);
+                _firebaseRemoteConfig = FirebaseRemoteConfig.GetInstance(_firebaseApp);
                 IsFirebaseReady = true;
-
+                
                 BaseLogSystem.GetLogger().Info("[Firebase] Initialize Completed");
             }
             else
@@ -92,6 +97,14 @@ namespace PaidRubik
             }
 
             return result;
+        }
+
+        public async UniTask<bool> FetchRemoteConfig()
+        {
+            if (!IsFirebaseReady) return false;
+
+            await _firebaseRemoteConfig.FetchAsync(TimeSpan.Zero);
+            return await _firebaseRemoteConfig.ActivateAsync();
         }
 
         public async UniTask SetJsonAsync(string key, string data)

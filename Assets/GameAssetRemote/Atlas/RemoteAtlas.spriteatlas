@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: RemoteAtlas
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 1
+      enableTightPacking: 0
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
+    variantMultiplier: 1
+    packables:
+    - {fileID: 2800000, guid: 19c24902cbdde4dc18d693bb05181a18, type: 3}
+    - {fileID: 2800000, guid: 6452ddba733244657b3f8deb421b6c67, type: 3}
+    - {fileID: 2800000, guid: 31d8d001811ca4c029d00f7c14689d73, type: 3}
+    - {fileID: 2800000, guid: 2e71b3cc317154644bb46408f340c81b, type: 3}
+    - {fileID: 2800000, guid: 5b476be467590401293676611376cd53, type: 3}
+    - {fileID: 2800000, guid: 0aff713364cd342aba2ef866d34b563f, type: 3}
+    - {fileID: 2800000, guid: 220bc8d5ef92e466e8346da41116f8a4, type: 3}
+    - {fileID: 2800000, guid: 3b6974f9f88d3486fb2d4f27c283cb07, type: 3}
+    - {fileID: 2800000, guid: 5c2636ac2ffe14aa18b0adefd0a3b16c, type: 3}
+    bindAsDefault: 0
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 31d8d001811ca4c029d00f7c14689d73, type: 3}
+  - {fileID: 21300000, guid: 19c24902cbdde4dc18d693bb05181a18, type: 3}
+  - {fileID: 21300000, guid: 0aff713364cd342aba2ef866d34b563f, type: 3}
+  - {fileID: 21300000, guid: 5b476be467590401293676611376cd53, type: 3}
+  - {fileID: 21300000, guid: 220bc8d5ef92e466e8346da41116f8a4, type: 3}
+  - {fileID: 21300000, guid: 3b6974f9f88d3486fb2d4f27c283cb07, type: 3}
+  - {fileID: 21300000, guid: 6452ddba733244657b3f8deb421b6c67, type: 3}
+  - {fileID: 21300000, guid: 5c2636ac2ffe14aa18b0adefd0a3b16c, type: 3}
+  - {fileID: 21300000, guid: 2e71b3cc317154644bb46408f340c81b, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - LvlMap3Star
+  - LvlMapAvailable
+  - LvlMap2Star
+  - LvlMap1Star
+  - LvlMap01
+  - LvlMap02
+  - LvlMapLock
+  - LvlMap03
+  - LvlMap0Star
+  m_RenderDataMap: {}
+  m_Tag: RemoteAtlas
+  m_IsVariant: 0
