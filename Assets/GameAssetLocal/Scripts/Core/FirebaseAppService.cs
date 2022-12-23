@@ -6,6 +6,8 @@ using Base.Pattern;
 using Cysharp.Threading.Tasks;
 using Firebase;
 using Firebase.Auth;
+using Firebase.Database;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace PaidRubik
@@ -14,8 +16,18 @@ namespace PaidRubik
     {
         private FirebaseApp _firebaseApp;
         private FirebaseAuth _firebaseAuth;
-        
+        private FirebaseDatabase _firebaseDatabase;
+
+        private const string DatabaseURL = "https://battleofheroes-48e86-default-rtdb.asia-southeast1.firebasedatabase.app";
         public bool IsFirebaseReady { get; set; }
+
+        public string UserID => _firebaseAuth.CurrentUser.UserId;
+        public FirebaseUser FirebaseUser => _firebaseAuth.CurrentUser;
+
+        public DatabaseReference RootRef => _firebaseDatabase.RootReference;
+
+        public DatabaseReference MyRef => _firebaseDatabase.GetReference($"Users/{UserID}");
+
         public void Init()
         {
             
@@ -23,8 +35,11 @@ namespace PaidRubik
 
         public void Dispose()
         {
+            //_firebaseAuth.SignOut();
+            
             _firebaseApp.Dispose();
             _firebaseAuth.Dispose();
+            _firebaseDatabase = null;
         }
 
         public async UniTask InitializeAsync()
@@ -36,9 +51,9 @@ namespace PaidRubik
             {
                 _firebaseApp = FirebaseApp.DefaultInstance;
                 _firebaseAuth = FirebaseAuth.GetAuth(_firebaseApp);
-
+                _firebaseDatabase = FirebaseDatabase.GetInstance(_firebaseApp, DatabaseURL);
                 IsFirebaseReady = true;
-                
+
                 BaseLogSystem.GetLogger().Info("[Firebase] Initialize Completed");
             }
             else
@@ -47,6 +62,43 @@ namespace PaidRubik
                 
                 BaseLogSystem.GetLogger().Info("[Firebase] Initialize Failed");
             }
+        }
+
+        public async UniTask LoginAnonymous()
+        {
+            if (!IsFirebaseReady) return;
+            
+            var result = await _firebaseAuth.SignInAnonymouslyAsync();
+
+            if (result != null)
+            {
+                BaseLogSystem.GetLogger().Info("[Login] UserID: {0}", result.UserId);
+            }
+        }
+
+        public async UniTask<DataSnapshot> LoadUserDataAsync(string key)
+        {
+            if (!IsFirebaseReady) return null;
+
+            var result = await RootRef.Child("Users").Child(UserID).Child(key).GetValueAsync();
+
+            if (result.Exists)
+            {
+                BaseLogSystem.GetLogger().Info($"[Database] Load ({key}) Data Successfully ...");
+            }
+            else
+            {
+                BaseLogSystem.GetLogger().Info($"[Database] ({key}) Data's not exist. Write data to server ...");
+            }
+
+            return result;
+        }
+
+        public async UniTask SetJsonAsync(string key, string data)
+        {
+            if (!IsFirebaseReady) return;
+
+            await MyRef.Child(key).SetRawJsonValueAsync(data);
         }
     }
 }

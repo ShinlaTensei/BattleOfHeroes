@@ -15,14 +15,23 @@ namespace PaidRubik
         public StringReactiveProperty ID => _id;
         public IntReactiveProperty Amount => _amount;
     }
+    
+    [Serializable]
+    public class CurrencyDataBlueprint
+    {
+        public string ID;
+        public int Amount;
+    }
 
     public enum CurrencyEnum
     {
         Coin = 0
     }
-    public class UserCurrencyService : IService<CurrencyData>, IDisposable
+    public class UserCurrencyService : IService<CurrencyData>, IDisposable, ISerialize<CurrencyDataBlueprint>
     {
         private Dictionary<string, CurrencyData> _currencyData = new Dictionary<string, CurrencyData>();
+
+        private const string GoldKey = "GOLD";
 
         public CurrencyData GetCurrencyByID(string id, bool createIfNotExist = false)
         {
@@ -56,6 +65,27 @@ namespace PaidRubik
         public void Dispose()
         {
             _currencyData.Clear();
+        }
+
+        public CurrencyDataBlueprint To()
+        {
+            CurrencyData data = GetCurrencyByID(GoldKey, true);
+            return new CurrencyDataBlueprint
+            {
+                ID = data.ID.Value, Amount = data.Amount.Value
+            };
+        }
+
+        public void From(CurrencyDataBlueprint data)
+        {
+            CurrencyData currencyData = GetCurrencyByID(data.ID, true);
+            currencyData.Amount.Value = data.Amount;
+        }
+
+        public void Raise()
+        {
+            CurrencyData data = GetCurrencyByID(GoldKey, true);
+            data.Amount.SetValueAndForceNotify(data.Amount.Value);
         }
     }
 }

@@ -21,7 +21,7 @@ namespace PaidRubik
 
         public void Dispose()
         {
-            if (!_tokenOnDispose.IsCancellationRequested)
+            if (_tokenOnDispose is { IsCancellationRequested: false })
             {
                 _tokenOnDispose.Cancel();
                 _tokenOnDispose.Dispose();
