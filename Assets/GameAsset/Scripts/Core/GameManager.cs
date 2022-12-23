@@ -1,30 +1,41 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Base;
 using Base.Pattern;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.ResourceProviders;
 
 namespace PaidRubik
 {
     public class GameManager : MonoBehaviour
     {
         [SerializeField] private ObjectPooler _pooler;
-        private void Start()
+        [SerializeField] private AssetReference homeSceneRef;
+
+        private SceneInstance? _sceneOperation;
+        private void Awake()
         {
-            InitService();
+            InitService().Forget();
         }
 
-        private void OnDestroy()
+        private void OnApplicationQuit()
         {
             ReleaseService();
         }
 
-        private void InitService()
+        private async UniTaskVoid InitService()
         {
             ServiceLocator.GetService<UIViewManager>().Init();
-            ServiceLocator.GetService<AddressableManager>().Init();
+            
+            await ServiceLocator.GetService<AddressableManager>().InitializeAsync();
+            
             ServiceLocator.SetService(_pooler).Init();
+            ServiceLocator.GetService<UserCurrencyService>().Init();
+            ServiceLocator.GetService<SceneLoadService>().Init();
+            
+            await ServiceLocator.GetService<SceneLoadService>().LoadHomeScene(homeSceneRef);
+
+            await ServiceLocator.GetService<UIViewManager>().Show<ShopUI>();
         }
 
         private void ReleaseService()
@@ -32,6 +43,8 @@ namespace PaidRubik
             ServiceLocator.GetService<UIViewManager>().Dispose();
             ServiceLocator.GetService<AddressableManager>().Dispose();
             ServiceLocator.GetService<ObjectPooler>().Dispose();
+            ServiceLocator.GetService<UserCurrencyService>().Dispose();
+            ServiceLocator.GetService<SceneLoadService>().Dispose();
         }
     }
 }

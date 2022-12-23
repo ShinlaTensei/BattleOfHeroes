@@ -38,7 +38,7 @@ namespace Base
 
         private async UniTask<T> ShowAsync<T>(T instance, Action onInit = null, Transform root = null, CancellationToken cancellationToken = default) where T : UIView
         {
-            T view = instance ? instance : TryGetView<T>();
+            T view = instance ? instance : GetView<T>();
 
             if (!view)
             {
@@ -123,7 +123,7 @@ namespace Base
             _uiViewPool.Remove(key);
         }
         
-        private T TryGetView<T>() where T : UIView
+        public T GetView<T>() where T : UIView
         {
             _uiViewPool.TryGetValue(typeof(T).Name, out UIView value);
 
@@ -150,7 +150,7 @@ namespace Base
             {
                 prefabPath = modelName;
                 inst = await _addressableManager.InstantiateAsync(prefabPath,
-                    parent: GetCanvasWithTag(UICanvasType.RootCanvas, CacheGameObject.scene.name), retryCount: 5,
+                    parent: GetCanvasWithTag(UICanvasType.RootCanvas, attribute.SceneName), retryCount: 5,
                     cancellationToken: cancellationToken);
             }
 
@@ -178,7 +178,14 @@ namespace Base
             instance.CacheTransform.SetScale(1);
             instance.CacheTransform.SetLocalPosition(Vector3.zero);
             instance.RectTransform.anchoredPosition = Vector3.zero;
-            instance.CacheTransform.SetAsLastSibling();
+            if (instance.NavigationState.HasBit(NavigationState.Overlap))
+            {
+                instance.CacheTransform.SetAsFirstSibling();
+            }
+            else
+            {
+                instance.CacheTransform.SetAsLastSibling();
+            }
             instance.Root.SetActive(instance.ActiveDefault);
             
             Add(instance);
