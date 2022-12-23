@@ -275,9 +275,6 @@ namespace Base
 
         public void Init()
         {
-            _uiViewPool.Clear();
-            _uiCanvasPool.Clear();
-
             _addressableManager = ServiceLocator.GetService<AddressableManager>();
         }
 

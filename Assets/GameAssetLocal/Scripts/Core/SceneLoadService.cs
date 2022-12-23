@@ -40,12 +40,23 @@ namespace PaidRubik
                 await sceneInstance.Value.ActivateAsync();
             }
         }
+
+        public async UniTask LoadLoadingScene()
+        {
+            await SceneManager.LoadSceneAsync(SceneName.LoadingScene, LoadSceneMode.Additive).ToUniTask();
+        }
+
+        public async UniTask UnLoadLoadingScene()
+        {
+            await SceneManager.UnloadSceneAsync(SceneName.LoadingScene).ToUniTask();
+        }
     }
 
     public static class SceneName
     {
         public const string HomeScene = "HomeScene";
         public const string GameScene = "GameScene";
+        public const string LoadingScene = "LoadingScene";
     }
 }
 
