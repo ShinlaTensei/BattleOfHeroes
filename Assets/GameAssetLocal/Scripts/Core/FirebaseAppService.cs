@@ -13,7 +13,7 @@ using UnityEngine;
 
 namespace PaidRubik
 {
-    public class FirebaseAppService : IService, IDisposable
+    public class FirebaseAppService : IService
     {
         private FirebaseApp _firebaseApp;
         private FirebaseAuth _firebaseAuth;
@@ -37,9 +37,8 @@ namespace PaidRubik
             
         }
 
-        public void Dispose()
+        public void DeInit()
         {
-            //_firebaseAuth.SignOut();
             _firebaseAuth.Dispose();
             _firebaseDatabase = null;
             _firebaseRemoteConfig.Info.Dispose();
@@ -72,12 +71,22 @@ namespace PaidRubik
         public async UniTask LoginAnonymous()
         {
             if (!IsFirebaseReady) return;
-            
-            var result = await _firebaseAuth.SignInAnonymouslyAsync();
 
-            if (result != null)
+            if (_firebaseAuth.CurrentUser != null)
             {
-                BaseLogSystem.GetLogger().Info("[Login] UserID: {0}", result.UserId);
+                await _firebaseAuth.CurrentUser.ReloadAsync();
+
+                BaseLogSystem.GetLogger().Info("[Login] User: {0}", _firebaseAuth.CurrentUser);
+            }
+
+            if (_firebaseAuth.CurrentUser == null)
+            {
+                var result = await _firebaseAuth.SignInAnonymouslyAsync();
+
+                if (result != null)
+                {
+                    BaseLogSystem.GetLogger().Info("[Login] UserID: {0}", result.UserId);
+                }
             }
         }
 

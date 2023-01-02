@@ -14,10 +14,17 @@ namespace PaidRubik
     {
         [SerializeField] private TMP_Text valueText;
 
+        private CompositeDisposable _disposable = new CompositeDisposable();
+
         private void Awake()
         {
-            ServiceLocator.GetService<UserCurrencyService>().GetCurrencyByID(CurrencyEnum.Coin.ToString(), true).Amount.Subscribe(OnCurrencyChanged)
-                .AddTo(this);
+            ServiceLocator.GetService<UserCurrencyService>()?.GetCurrencyByID(CurrencyEnum.Coin.ToString(), true).Amount.Subscribe(OnCurrencyChanged)
+                .AddTo(_disposable);
+        }
+
+        private void OnDestroy()
+        {
+            _disposable.Clear();
         }
 
         private void OnCurrencyChanged(int value)

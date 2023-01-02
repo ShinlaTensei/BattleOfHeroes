@@ -25,7 +25,7 @@ namespace PaidRubik
         {
             if (value)
             {
-                ServiceLocator.GetSignal<NavigationChangedSignal>().Dispatch(this);
+                ServiceLocator.GetSignal<NavigationChangedSignal>()?.Dispatch(this);
                 toggle.isOn = true;
             }
         }

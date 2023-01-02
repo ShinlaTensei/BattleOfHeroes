@@ -53,7 +53,7 @@ namespace Base.Pattern
         /// </summary>
         public MovementReferenceMode ReferenceMode => movementReferenceParam.movementReferenceMode;
 
-        private bool CanCurrentStateOverrideAnimator => CurrentState.IsOverrideAnimator && Animator != null && CurrentState.RuntimeAnimator != null;
+        protected bool CanCurrentStateOverrideAnimator => CurrentState.IsOverrideAnimator && Animator != null && CurrentState.RuntimeAnimator != null;
 
         
         /// <summary>
@@ -71,12 +71,9 @@ namespace Base.Pattern
 
         public CharacterState GetState<T>() where T : CharacterState
         {
-            foreach (var state in _states.Values)
+            if (_states.TryGetValue(typeof(T).Name, out CharacterState state))
             {
-                if (state.GetType() == typeof(T))
-                {
-                    return state;
-                }
+                return state;
             }
 
             return null;
@@ -109,7 +106,7 @@ namespace Base.Pattern
         }
         
         // --------------------------- Unity Event function ------------------------------------------------ //
-        private void Awake()
+        protected virtual void Awake()
         {
             AddAndInitializeState();
         }
@@ -162,7 +159,7 @@ namespace Base.Pattern
         }
 
         // --------------------------- End of Unity Event function ----------------------------------------- //
-
+        
         private void InitializeAnimation()
         {
             

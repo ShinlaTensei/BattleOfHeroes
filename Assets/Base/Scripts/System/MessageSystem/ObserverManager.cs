@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Base.Pattern;
 using UnityEngine;
 
-namespace Base.MessageSystem
+namespace Base.Services
 {
     public class ObserverManager : IService, IDisposable
     {
@@ -92,6 +92,11 @@ namespace Base.MessageSystem
         public void Init()
         {
             _listeners = new Dictionary<Enum, Callback<object>>();
+        }
+
+        public void DeInit()
+        {
+            
         }
     }
 

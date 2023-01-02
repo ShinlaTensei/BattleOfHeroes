@@ -19,6 +19,12 @@ namespace PaidRubik
     [Serializable]
     public class CurrencyDataBlueprint
     {
+        public List<CurrencyRecord> Records;
+    }
+    
+    [Serializable]
+    public class CurrencyRecord
+    {
         public string ID;
         public int Amount;
     }
@@ -27,11 +33,17 @@ namespace PaidRubik
     {
         Coin = 0
     }
-    public class UserCurrencyService : IService<CurrencyData>, IDisposable, ISerialize<CurrencyDataBlueprint>
+
+    public static class CurrencyID
+    {
+        public const string GoldKey = "GOLD";
+        public const string StarKey = "STAR";
+    }
+    public class UserCurrencyService : IService<CurrencyData>, ISerialize<CurrencyDataBlueprint>
     {
         private Dictionary<string, CurrencyData> _currencyData = new Dictionary<string, CurrencyData>();
 
-        private const string GoldKey = "GOLD";
+        public string CurrencyConfigKey = "CurrencyConfig";
 
         public CurrencyData GetCurrencyByID(string id, bool createIfNotExist = false)
         {
@@ -62,30 +74,39 @@ namespace PaidRubik
             
         }
 
-        public void Dispose()
+        public void DeInit()
         {
             _currencyData.Clear();
         }
 
         public CurrencyDataBlueprint To()
         {
-            CurrencyData data = GetCurrencyByID(GoldKey, true);
-            return new CurrencyDataBlueprint
+            CurrencyDataBlueprint currencyDataBlueprint = new CurrencyDataBlueprint();
+            foreach (var currency in _currencyData.Values)
             {
-                ID = data.ID.Value, Amount = data.Amount.Value
-            };
+                currencyDataBlueprint.Records.Add(new CurrencyRecord
+                {
+                    Amount = currency.Amount.Value,
+                    ID = currency.ID.Value
+                });
+            }
+
+            return currencyDataBlueprint;
         }
 
         public void From(CurrencyDataBlueprint data)
         {
-            CurrencyData currencyData = GetCurrencyByID(data.ID, true);
-            currencyData.Amount.Value = data.Amount;
+            foreach (var record in data.Records)
+            {
+                CurrencyData currencyData = GetCurrencyByID(record.ID, true);
+                currencyData.Amount.Value = record.Amount;
+                currencyData.ID.Value = record.ID;
+            }
         }
 
         public void Raise()
         {
-            CurrencyData data = GetCurrencyByID(GoldKey, true);
-            data.Amount.SetValueAndForceNotify(data.Amount.Value);
+           
         }
     }
 }

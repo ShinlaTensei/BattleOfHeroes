@@ -4,43 +4,53 @@
     "Data": [
       {
         "Index": 1,
-        "Reward": 100
+        "Reward": 100,
+        "Status": "Locked"
       },
       {
         "Index": 2,
-        "Reward": 100
+        "Reward": 100,
+        "Status": "Locked"
       },
       {
         "Index": 3,
-        "Reward": 100
+        "Reward": 100,
+        "Status": "Locked"
       },
       {
         "Index": 4,
-        "Reward": 100
+        "Reward": 100,
+        "Status": "Locked"
       },
       {
         "Index": 5,
-        "Reward": 100
+        "Reward": 100,
+        "Status": "Locked"
       },
       {
         "Index": 6,
-        "Reward": 100
+        "Reward": 100,
+        "Status": "Locked"
       },
       {
         "Index": 7,
-        "Reward": 100
+        "Reward": 100,
+        "Status": "Locked"
       },
       {
         "Index": 8,
-        "Reward": 100
+        "Reward": 100,
+        "Status": "Locked"
       },
       {
         "Index": 9,
-        "Reward": 100
+        "Reward": 100,
+        "Status": "Locked"
       },
       {
         "Index": 10,
-        "Reward": 100
+        "Reward": 100,
+        "Status": "Locked"
       }
     ]
   }

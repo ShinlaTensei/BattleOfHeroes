@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
+using Base.Helper;
 using Base.Logging;
-using Base.MessageSystem;
+using Base.Services;
+using Cysharp.Threading.Tasks;
+using JetBrains.Annotations;
+using UniRx;
 using UnityEngine;
 
 namespace Base.Pattern
@@ -16,14 +20,16 @@ namespace Base.Pattern
 
         protected override void OnDestroy()
         {
-            base.OnDestroy();
-            
+            ClearAllListener();
             Services.Clear();
             Signals.Clear();
+            
+            base.OnDestroy();
         }
 
         #region Service
-
+        
+        [CanBeNull]
         public static T GetService<T>() where T : class, IService
         {
             return ResolveService<T>();
@@ -33,16 +39,28 @@ namespace Base.Pattern
         {
             if (!Instance.Services.ContainsKey(typeof(T)))
             {
-                var value = Activator.CreateInstance<T>();
-                Instance.Services.Add(typeof(T), value);
+                IService result;
+                if (typeof(T).IsSubclassOf(typeof(MonoBehaviour)))
+                {
+                    GameObject inst = new GameObject();
+                    inst.transform.SetParent(Instance.CacheTransform);
+                    result = inst.AddComponent(typeof(T)) as T;
+                    inst.name = $"{typeof(T).Name}-Singleton";
+                }
+                else
+                {
+                    result = Activator.CreateInstance<T>();
+                }
+                
+                Instance.Services.Add(typeof(T), result);
 
-                return value;
+                return (T)result;
             }
             else
             {
                 Instance.GetLogger().Debug("Service {0} is already added", typeof(T));
 
-                return null;
+                return GetService<T>();
             }
         }
 
@@ -72,27 +90,10 @@ namespace Base.Pattern
 
         private static T ResolveService<T>() where T : class, IService
         {
+            if (ShuttingDown) return null;
+            
             IService result = default;
-            if (Instance.Services.TryGetValue(typeof(T), out IService concreteType))
-            {
-                result = concreteType;
-            }
-            else
-            {
-                if (typeof(T).IsSubclassOf(typeof(MonoBehaviour)))
-                {
-                    GameObject inst = new GameObject();
-                    inst.transform.SetParent(Instance.CacheTransform);
-                    result = inst.AddComponent(typeof(T)) as T;
-                    SetService((T)result);
-                    inst.name = $"{typeof(T).Name}-Singleton";
-                }
-                else
-                {
-                    SetService<T>();
-                    result = ResolveService<T>();
-                }
-            }
+            result = Instance.Services.TryGetValue(typeof(T), out IService concreteType) ? concreteType : SetService<T>();
 
             return result as T;
         }
@@ -100,22 +101,27 @@ namespace Base.Pattern
         #endregion
 
         #region Signal
-
+        
+        [CanBeNull]
         public static T GetSignal<T>() where T : class, ISignal
         {
             return ResolveSignal<T>();
         }
 
-        public static void SetSignal<T>() where T : class, ISignal
+        public static T SetSignal<T>() where T : class, ISignal
         {
             if (!Instance.Signals.ContainsKey(typeof(T)))
             {
                 T signal = Activator.CreateInstance<T>();
                 Instance.Signals.TryAdd(typeof(T), signal);
+
+                return signal;
             }
-            else
+            
             {
                 Instance.GetLogger().Debug("Signal {0} is already added", typeof(T));
+
+                return GetSignal<T>();
             }
         }
 
@@ -129,6 +135,8 @@ namespace Base.Pattern
 
         private static T ResolveSignal<T>() where T : class, ISignal
         {
+            if (ShuttingDown) return null;
+            
             ISignal result = default;
             if (Instance.Signals.TryGetValue(typeof(T), out ISignal concreteSignal))
             {
@@ -141,6 +149,14 @@ namespace Base.Pattern
             }
 
             return result as T;
+        }
+
+        private void ClearAllListener()
+        {
+            foreach (var signal in Signals.Values)
+            {
+                signal.RemoveAllListener();
+            }
         }
 
         #endregion

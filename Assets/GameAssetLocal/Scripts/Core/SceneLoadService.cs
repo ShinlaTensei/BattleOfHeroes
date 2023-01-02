@@ -11,15 +11,18 @@ using UnityEngine.SceneManagement;
 
 namespace PaidRubik
 {
-    public class SceneLoadService : IService, IDisposable
+    public class SceneLoadService : IService
     {
         private CancellationTokenSource _tokenOnDispose;
+
+        private SceneInstance _homeSceneInstance;
+        private SceneInstance _gameSceneInstance;
         public void Init()
         {
             _tokenOnDispose = new CancellationTokenSource();
         }
 
-        public void Dispose()
+        public void DeInit()
         {
             if (_tokenOnDispose is { IsCancellationRequested: false })
             {
@@ -37,6 +40,25 @@ namespace PaidRubik
 
             if (sceneInstance.HasValue)
             {
+                _homeSceneInstance = sceneInstance.Value;
+                await sceneInstance.Value.ActivateAsync();
+            }
+        }
+
+        public async UniTask UnloadHomeScene()
+        {
+            await ServiceLocator.GetService<AddressableManager>()
+                .UnloadScene(_homeSceneInstance, cancellationToken: _tokenOnDispose.Token);
+        }
+        
+        public async UniTask LoadGameScene(AssetReference sceneRef)
+        {
+            SceneInstance? sceneInstance = await ServiceLocator.GetService<AddressableManager>()
+                .LoadSceneAsync(sceneRef, LoadSceneMode.Additive, cancellationToken: _tokenOnDispose.Token);
+
+            if (sceneInstance.HasValue)
+            {
+                _gameSceneInstance = sceneInstance.Value;
                 await sceneInstance.Value.ActivateAsync();
             }
         }

@@ -35,7 +35,7 @@ namespace PaidRubik
         }
     }
     
-    public class UserDataService : IService, IDisposable, ISerialize<UserDataBlueprint>
+    public class UserDataService : IService, ISerialize<UserDataBlueprint>
     {
         private UserData _userData = new UserData();
         
@@ -44,9 +44,9 @@ namespace PaidRubik
             throw new NotImplementedException();
         }
 
-        public void Dispose()
+        public void DeInit()
         {
-            throw new NotImplementedException();
+            
         }
 
         public UserDataBlueprint To()

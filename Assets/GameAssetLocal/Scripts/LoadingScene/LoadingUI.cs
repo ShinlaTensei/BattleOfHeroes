@@ -17,7 +17,7 @@ namespace PaidRubik
 
         private void Awake()
         {
-            ServiceLocator.GetService<UIViewManager>().Add(this);
+            ServiceLocator.GetService<UIViewManager>()?.Add(this);
 
             progressSlider.value = 1;
         }
