@@ -1,13 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading;
 using Base;
+using Base.Data.Structure;
+using Base.Helper;
 using Base.Logging;
 using Base.Pattern;
 using Base.Services;
 using Cysharp.Threading.Tasks;
 using Firebase.Database;
 using Firebase.RemoteConfig;
+using Google.Protobuf;
 using Newtonsoft.Json;
 using UniRx;
 using UnityEngine;
@@ -29,9 +33,13 @@ namespace PaidRubik
         public const string UserData = "Data";
         public const string Currencies = "Currencies";
     }
+
+    public static class ConfigKey
+    {
+        public const string Currency = "CurrencyConfig";
+    }
     public class GameManager : MonoBehaviour
     {
-        [SerializeField] private ObjectPooler _pooler;
         [SerializeField] private AssetReference homeSceneRef;
         [SerializeField] private AssetReference gameSceneRef;
         
@@ -46,7 +54,7 @@ namespace PaidRubik
             ReleaseSignal();
             ReleaseService();
         }
-        
+
         private async UniTaskVoid InitService()
         {
             CancellationTokenSource tokenSource = new CancellationTokenSource();
@@ -61,9 +69,7 @@ namespace PaidRubik
 
                 await ServiceLocator.GetService<FirebaseAppService>()!.InitializeAsync();
                 await ServiceLocator.GetService<AddressableManager>()!.InitializeAsync(cancellationToken: tokenSource.Token);
-
-                ServiceLocator.SetService(_pooler).Init();
-                ServiceLocator.GetService<UserCurrencyService>()?.Init();
+                
                 ServiceLocator.GetService<SceneLoadService>()?.Init();
                 ServiceLocator.GetService<MapService>()?.Init();
                 ServiceLocator.GetService<BlueprintLocalization>()?.Init();
@@ -71,6 +77,8 @@ namespace PaidRubik
                 uiViewManager.GetView<LoadingUI>().SetStatus("Loading Services ...", .1f);
 
                 await LoginAndLoadConfig();
+                
+                ServiceLocator.GetService<UserCurrencyService>()?.InitBlueprint();
 
                 await ServiceLocator.GetService<SceneLoadService>()!.UnLoadLoadingScene().AttachExternalCancellation(tokenSource.Token);
 
@@ -121,34 +129,33 @@ namespace PaidRubik
             if (userData.Exists)
             {
                 string json = userData.GetRawJsonValue();
-                ServiceLocator.GetService<UserDataService>()!.From(JsonConvert.DeserializeObject<UserDataBlueprint>(json));
+                ServiceLocator.GetBlueprint<UserDataService>()?.ReadBlueprint(Encoding.UTF8.GetBytes(json));
             }
             else
             {
-                UserDataBlueprint pushData = new UserDataBlueprint
+                PlayerProto.Types.UserData pushData = new PlayerProto.Types.UserData
                 {
-                    ID = firebaseService.UserID,
-                    SettingBlueprint = new UserSettingBlueprint { IsMusic = true, IsSound = true }
+                    Id = firebaseService.UserID,
+                    IsMusic = true,
+                    IsSound = true
                 };
-                await firebaseService.SetJsonAsync(DatabaseKey.UserData, JsonConvert.SerializeObject(pushData));
+                ServiceLocator.GetService<UserDataService>()?.AddData(pushData);
+                string json = ServiceLocator.GetService<UserDataService>()?.SerializeJson();
+                await firebaseService.SetJsonAsync(DatabaseKey.UserData, json);
             }
             DataSnapshot userCurrencies = await firebaseService.LoadUserDataAsync(DatabaseKey.Currencies);
             if (userCurrencies.Exists)
             {
                 string json = userCurrencies.GetRawJsonValue();
-                ServiceLocator.GetService<UserCurrencyService>()?
-                    .From(JsonConvert.DeserializeObject<CurrencyDataBlueprint>(json));
+                ServiceLocator.GetService<UserCurrencyService>()?.ReadBlueprint(Encoding.UTF8.GetBytes(json));
             }
             else
             {
-                UserCurrencyService currencyService = ServiceLocator.GetService<UserCurrencyService>();
                 firebaseService.RemoteConfig.AllValues
-                    .TryGetValue(currencyService!.CurrencyConfigKey, out ConfigValue currencyConfig);
-                CurrencyDataBlueprint currencyDataBlueprint =
-                    JsonConvert.DeserializeObject<CurrencyDataBlueprint>(currencyConfig.StringValue);
-                currencyService.From(currencyDataBlueprint);
+                    .TryGetValue(ConfigKey.Currency, out ConfigValue currencyConfig);
 
                 string pushData = currencyConfig.StringValue;
+                ServiceLocator.GetService<UserCurrencyService>()?.ReadBlueprint(Encoding.UTF8.GetBytes(pushData));
                 await firebaseService.SetJsonAsync(DatabaseKey.Currencies, pushData);
             }
             uiViewManager.GetView<LoadingUI>().SetStatus("Loading data ...", 1f);
@@ -192,7 +199,6 @@ namespace PaidRubik
         {
             ServiceLocator.GetService<UIViewManager>()?.DeInit();
             ServiceLocator.GetService<AddressableManager>()?.DeInit();
-            ServiceLocator.GetService<ObjectPooler>()?.DeInit();
             ServiceLocator.GetService<UserCurrencyService>()?.DeInit();
             ServiceLocator.GetService<SceneLoadService>()?.DeInit();
             ServiceLocator.GetService<FirebaseAppService>()?.DeInit();

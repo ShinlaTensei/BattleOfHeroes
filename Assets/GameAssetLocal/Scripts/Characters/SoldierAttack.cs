@@ -11,6 +11,11 @@ namespace PaidRubik
         {
             
         }
+
+        public void CheckHitEnemy()
+        {
+            
+        }
     }
 }
 

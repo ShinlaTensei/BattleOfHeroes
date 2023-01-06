@@ -8,11 +8,18 @@ namespace PaidRubik
     public class SoldierWalk : CharacterState
     {
         private SoldierController SoldierController;
+
+        private static int Walking = Animator.StringToHash("Walking");
         protected override void Awake()
         {
             base.Awake();
             
             SoldierController = CharacterStateController as SoldierController;
+        }
+
+        public override void EnterState(float dt, CharacterState fromState)
+        {
+            SoldierController.Animator.SetBool(Walking, SoldierController.WalkState);
         }
 
         public override void FixedUpdateBehaviour(float dt)
@@ -22,10 +29,13 @@ namespace PaidRubik
 
         public override void CheckExitTransition()
         {
-            if (SoldierController.WalkState)
-            {
-                SoldierController.EnqueueTransition<SoldierWalk>();
-            }
+            
+        }
+
+        public override void ExitStateBehaviour(float dt, CharacterState toState)
+        {
+            SoldierController.WalkState = false;
+            SoldierController.Animator.SetBool(Walking, false);
         }
     }
 }

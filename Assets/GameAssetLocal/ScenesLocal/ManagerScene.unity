@@ -385,8 +385,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1625375794}
+  - component: {fileID: 1625375795}
+  - component: {fileID: 1625375796}
   m_Layer: 0
-  m_Name: Char1
+  m_Name: Character
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -405,9 +407,51 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1672403305}
+  - {fileID: 2128840255}
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1625375795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1625375793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20458f22153ea3c47ac0f225351747f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isMissingReference: 0
+  animator: {fileID: 1625375796}
+  currentState: {fileID: 2128840256}
+  movementReferenceParam:
+    movementReferenceMode: 0
+    external: {fileID: 0}
+  WalkState: 0
+  AttackState: 0
+  IdleState: 0
+--- !u!95 &1625375796
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1625375793}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: de2ef40c066fbe84f9cfcb5f6af4a049, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1640739955
 GameObject:
   m_ObjectHideFlags: 0
@@ -528,12 +572,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 4cc729dd7cdc3495c8683cd2cd89eeba, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 5, y: 5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -585,3 +629,66 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isMissingReference: 0
   isPersistent: 0
+--- !u!1 &2128840254
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2128840255}
+  - component: {fileID: 2128840256}
+  - component: {fileID: 2128840257}
+  m_Layer: 0
+  m_Name: States
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2128840255
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2128840254}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1625375794}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2128840256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2128840254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c73545f94e7f38b41a781c95093760d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isMissingReference: 0
+  isOverrideAnimator: 0
+  runtimeAnimatorController: {fileID: 0}
+--- !u!114 &2128840257
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2128840254}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b45e5c47a033f6f428ce2a06c7558200, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isMissingReference: 0
+  isOverrideAnimator: 1
+  runtimeAnimatorController: {fileID: 0}

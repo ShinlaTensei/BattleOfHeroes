@@ -1,0 +1,25 @@
+﻿syntax = "proto3";
+
+package base.data;
+
+option csharp_namespace = "Base.Data.Structure";
+
+message PlayerProto {
+    CurrencyRecord currency_record = 1;
+    UserData user_data = 2;
+    
+    message CurrencyRecord {
+        repeated CurrencyData currency_data = 1;
+    }
+    
+    message CurrencyData {
+        string id = 1;
+        int32 amount = 2;
+    }
+    
+    message UserData {
+        string id = 1;
+        bool is_sound = 2;
+        bool is_music = 3;
+    }
+}

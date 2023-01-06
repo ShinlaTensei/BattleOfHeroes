@@ -18,7 +18,7 @@ namespace PaidRubik
 
         private void Awake()
         {
-            ServiceLocator.GetService<UserCurrencyService>()?.GetCurrencyByID(CurrencyEnum.Coin.ToString(), true).Amount.Subscribe(OnCurrencyChanged)
+            ServiceLocator.GetService<UserCurrencyService>()?.GetCurrencyByID(CurrencyID.GoldKey, true).Amount.Subscribe(OnCurrencyChanged)
                 .AddTo(_disposable);
         }
 

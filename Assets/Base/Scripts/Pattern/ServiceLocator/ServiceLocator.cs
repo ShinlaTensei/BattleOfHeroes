@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Base.Helper;
 using Base.Logging;
+using Base.Module;
 using Base.Services;
 using Cysharp.Threading.Tasks;
 using JetBrains.Annotations;
@@ -14,7 +15,9 @@ namespace Base.Pattern
     {
         private Dictionary<Type, IService> _services = new Dictionary<Type, IService>();
         private Dictionary<Type, ISignal>   _signals = new Dictionary<Type, ISignal>();
+        private Dictionary<Type, IBlueprint> _blueprints = new Dictionary<Type, IBlueprint>();
 
+        public Dictionary<Type, IBlueprint> Blueprints => _blueprints;
         public Dictionary<Type, IService> Services => _services;
         public Dictionary<Type, ISignal> Signals => _signals;
 
@@ -23,6 +26,7 @@ namespace Base.Pattern
             ClearAllListener();
             Services.Clear();
             Signals.Clear();
+            Blueprints.Clear();
             
             base.OnDestroy();
         }
@@ -156,6 +160,59 @@ namespace Base.Pattern
             foreach (var signal in Signals.Values)
             {
                 signal.RemoveAllListener();
+            }
+        }
+
+        #endregion
+
+        #region Blueprint
+        
+        [CanBeNull]
+        public static T GetBlueprint<T>() where T : class, IBlueprint
+        {
+            return ResolveBlueprint<T>();
+        }
+
+        private static T ResolveBlueprint<T>() where T : class, IBlueprint
+        {
+            if (ShuttingDown) return null;
+            
+            IBlueprint result = default;
+            if (Instance.Blueprints.TryGetValue(typeof(T), out IBlueprint concreteSignal))
+            {
+                result = concreteSignal;
+            }
+            else
+            {
+                SetBlueprint<T>();
+                result = ResolveBlueprint<T>();
+            }
+
+            return result as T;
+        }
+        
+        public static T SetBlueprint<T>() where T : class, IBlueprint
+        {
+            if (!Instance.Blueprints.ContainsKey(typeof(T)))
+            {
+                T blueprint = Activator.CreateInstance<T>();
+                Instance.Blueprints.TryAdd(typeof(T), blueprint);
+
+                return blueprint;
+            }
+            
+            {
+                Instance.GetLogger().Debug("Signal {0} is already added", typeof(T));
+
+                return GetBlueprint<T>();
+            }
+        }
+        
+        public static void RemoveBlueprint<T>() where T : class, IBlueprint
+        {
+            if (Instance.Blueprints.ContainsKey(typeof(T)))
+            {
+                Instance.Blueprints.Remove(typeof(T));
             }
         }
 
