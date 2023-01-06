@@ -9,36 +9,34 @@ using UnityEngine;
 
 namespace PaidRubik
 {
-    public class UserDataService : BaseBlueprint<PlayerProto.Types.UserData>, IService<PlayerProto.Types.UserData>
+    public record UserDataRecord
     {
+        public string UserID { get; set; }
+        public BoolReactiveProperty IsSound { get; set; } = new BoolReactiveProperty();
+        public BoolReactiveProperty IsMusic { get; set; } = new BoolReactiveProperty();
+    }
+    public class UserDataService : IService<PlayerProto.Types.UserData>
+    {
+        private UserDataRecord _userData;
         public void UpdateData(PlayerProto.Types.UserData data)
         {
-            
+            if (data is not null)
+            {
+                _userData.UserID = data.Id;
+                _userData.IsMusic.Value = data.IsMusic;
+                _userData.IsSound.Value = data.IsSound;
+            }
         }
 
         public void Init()
         {
-            
+            _userData = new UserDataRecord();
+            UpdateData(ServiceLocator.GetBlueprint<BlueprintUserData>()?.Data);
         }
 
         public void DeInit()
         {
             
-        }
-
-        public override void Load()
-        {
-            
-        }
-
-        public override void LoadDummyData()
-        {
-            throw new NotImplementedException();
-        }
-        
-        public void AddData(PlayerProto.Types.UserData userData)
-        {
-            Data = userData;
         }
     }
 }

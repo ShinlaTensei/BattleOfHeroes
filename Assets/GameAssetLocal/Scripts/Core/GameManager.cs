@@ -78,12 +78,15 @@ namespace PaidRubik
 
                 await LoginAndLoadConfig();
                 
-                ServiceLocator.GetService<UserCurrencyService>()?.InitBlueprint();
+                ServiceLocator.GetBlueprint<BlueprintCurrency>()?.InitBlueprint();
 
                 await ServiceLocator.GetService<SceneLoadService>()!.UnLoadLoadingScene().AttachExternalCancellation(tokenSource.Token);
 
                 await ServiceLocator.GetService<SceneLoadService>()!.LoadHomeScene(homeSceneRef)
                     .AttachExternalCancellation(tokenSource.Token);
+                
+                ServiceLocator.GetService<UserCurrencyService>()?.Init();
+                ServiceLocator.GetService<UserDataService>()?.Init();
             }
             catch (Exception e)
             {
@@ -129,7 +132,7 @@ namespace PaidRubik
             if (userData.Exists)
             {
                 string json = userData.GetRawJsonValue();
-                ServiceLocator.GetBlueprint<UserDataService>()?.ReadBlueprint(Encoding.UTF8.GetBytes(json));
+                ServiceLocator.GetBlueprint<BlueprintUserData>()?.ReadBlueprint(Encoding.UTF8.GetBytes(json));
             }
             else
             {
@@ -139,15 +142,15 @@ namespace PaidRubik
                     IsMusic = true,
                     IsSound = true
                 };
-                ServiceLocator.GetService<UserDataService>()?.AddData(pushData);
-                string json = ServiceLocator.GetService<UserDataService>()?.SerializeJson();
+                ServiceLocator.GetBlueprint<BlueprintUserData>()?.AddData(pushData);
+                string json = ServiceLocator.GetBlueprint<BlueprintUserData>()?.SerializeJson();
                 await firebaseService.SetJsonAsync(DatabaseKey.UserData, json);
             }
             DataSnapshot userCurrencies = await firebaseService.LoadUserDataAsync(DatabaseKey.Currencies);
             if (userCurrencies.Exists)
             {
                 string json = userCurrencies.GetRawJsonValue();
-                ServiceLocator.GetService<UserCurrencyService>()?.ReadBlueprint(Encoding.UTF8.GetBytes(json));
+                ServiceLocator.GetBlueprint<BlueprintCurrency>()?.ReadBlueprint(Encoding.UTF8.GetBytes(json));
             }
             else
             {
@@ -155,7 +158,7 @@ namespace PaidRubik
                     .TryGetValue(ConfigKey.Currency, out ConfigValue currencyConfig);
 
                 string pushData = currencyConfig.StringValue;
-                ServiceLocator.GetService<UserCurrencyService>()?.ReadBlueprint(Encoding.UTF8.GetBytes(pushData));
+                ServiceLocator.GetBlueprint<BlueprintCurrency>()?.ReadBlueprint(Encoding.UTF8.GetBytes(pushData));
                 await firebaseService.SetJsonAsync(DatabaseKey.Currencies, pushData);
             }
             uiViewManager.GetView<LoadingUI>().SetStatus("Loading data ...", 1f);

@@ -23,9 +23,11 @@ namespace PaidRubik
         public const string GoldKey = "GOLD";
         public const string StarKey = "STAR";
     }
-    public class UserCurrencyService : BaseBlueprint<PlayerProto.Types.CurrencyRecord>,IService<PlayerProto.Types.CurrencyData>
+    public class UserCurrencyService : IService<PlayerProto.Types.CurrencyData>
     {
         private Dictionary<string, CurrencyRecord> _currencyData = new Dictionary<string, CurrencyRecord>();
+
+        private BlueprintCurrency _blueprintCurrency;
 
         public CurrencyRecord GetCurrencyByID(string id, bool createIfNotExist = false)
         {
@@ -53,31 +55,16 @@ namespace PaidRubik
 
         public void Init()
         {
-            
+            _blueprintCurrency = ServiceLocator.GetBlueprint<BlueprintCurrency>();
+
+            UpdateData(_blueprintCurrency!.GetCurrencyByID(CurrencyID.GoldKey));
+            UpdateData(_blueprintCurrency.GetCurrencyByID(CurrencyID.StarKey));
         }
 
         public void DeInit()
         {
             _currencyData.Clear();
-        }
-
-        public override void Load()
-        {
-            if (Data is not null)
-            {
-                _currencyData.Clear();
-                foreach (var currency in Data.CurrencyData)
-                {
-                    CurrencyRecord @record = GetCurrencyByID(currency.Id, true);
-                    @record.Amount.Value = currency.Amount;
-                    @record.ID.Value = currency.Id;
-                }
-            }
-        }
-
-        public override void LoadDummyData()
-        {
-            throw new NotImplementedException();
+            _blueprintCurrency = null;
         }
     }
 }
