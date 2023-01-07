@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Base.Pattern;
 using UnityEngine;
 using System;
+using System.Text;
 using Base.Logging;
 
 namespace Base.Services
