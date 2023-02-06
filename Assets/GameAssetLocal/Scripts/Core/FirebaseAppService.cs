@@ -41,7 +41,6 @@ namespace PaidRubik
         {
             _firebaseAuth.Dispose();
             _firebaseDatabase = null;
-            _firebaseRemoteConfig.Info.Dispose();
             _firebaseApp.Dispose(true);
         }
 

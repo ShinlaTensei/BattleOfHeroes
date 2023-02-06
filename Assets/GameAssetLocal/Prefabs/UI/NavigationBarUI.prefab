@@ -281,6 +281,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MapButtonUI
       objectReference: {fileID: 0}
+    - target: {fileID: 2269364423498810296, guid: 4f308d863f2474d529ac32d4217e5f02, type: 3}
+      propertyPath: mainKey
+      value: '!!MAP'
+      objectReference: {fileID: 0}
     - target: {fileID: 7275199810405773732, guid: 4f308d863f2474d529ac32d4217e5f02, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -412,6 +416,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HeroesButtonUI
       objectReference: {fileID: 0}
+    - target: {fileID: 2269364423498810296, guid: 4f308d863f2474d529ac32d4217e5f02, type: 3}
+      propertyPath: mainKey
+      value: '!!HEROES'
+      objectReference: {fileID: 0}
     - target: {fileID: 7275199810405773732, guid: 4f308d863f2474d529ac32d4217e5f02, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -538,6 +546,10 @@ PrefabInstance:
     - target: {fileID: 2135260146046242649, guid: 4f308d863f2474d529ac32d4217e5f02, type: 3}
       propertyPath: m_Name
       value: ShopButtonUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 2269364423498810296, guid: 4f308d863f2474d529ac32d4217e5f02, type: 3}
+      propertyPath: mainKey
+      value: '!!SHOP'
       objectReference: {fileID: 0}
     - target: {fileID: 7275199810405773732, guid: 4f308d863f2474d529ac32d4217e5f02, type: 3}
       propertyPath: m_Sprite
@@ -669,6 +681,10 @@ PrefabInstance:
     - target: {fileID: 2135260146046242649, guid: 4f308d863f2474d529ac32d4217e5f02, type: 3}
       propertyPath: m_Name
       value: SettingButtonUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 2269364423498810296, guid: 4f308d863f2474d529ac32d4217e5f02, type: 3}
+      propertyPath: mainKey
+      value: '!!SETTING'
       objectReference: {fileID: 0}
     - target: {fileID: 7275199810405773732, guid: 4f308d863f2474d529ac32d4217e5f02, type: 3}
       propertyPath: m_Sprite
